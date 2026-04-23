@@ -26,6 +26,9 @@
               <button class="dropdown-item" id="menu-temp" onclick="showPanel('temp')">
                 <span>🌡️</span> Temperature
               </button>
+              <button class="dropdown-item" id="menu-area" onclick="showPanel('area')">
+                <span>📐</span> Area
+              </button>
             </div>
           </div>
           <span class="title-text" id="top-bar-title">Scientific</span>
@@ -190,6 +193,58 @@
   </div>
 
 
+
+  <!-- ===== AREA CONVERTER PANEL ===== -->
+  <div class="panel" id="panel-area">
+    <div class="converter-box">
+      <div class="conv-title">📐 <span>Area</span> Converter</div>
+      <div class="conv-row">
+        <div class="conv-field">
+          <div class="conv-label">From</div>
+          <div class="conv-input-wrap">
+            <input class="conv-input" id="area-input" type="number" placeholder="0" oninput="convertArea()">
+            <select class="conv-select" id="area-from" onchange="convertArea()">
+              <option value="m2">Square metre (m²)</option>
+              <option value="km2">Square km (km²)</option>
+              <option value="cm2">Square cm (cm²)</option>
+              <option value="mm2">Square mm (mm²)</option>
+              <option value="ft2" selected>Square feet (ft²)</option>
+              <option value="in2">Square inch (in²)</option>
+              <option value="yd2">Square yard (yd²)</option>
+              <option value="mi2">Square mile (mi²)</option>
+              <option value="ha">Hectare (ha)</option>
+              <option value="ac">Acre (ac)</option>
+            </select>
+          </div>
+        </div>
+        <button class="swap-btn" onclick="swapArea()" title="Swap units">&#8645;</button>
+        <div class="conv-field">
+          <div class="conv-label">To</div>
+          <div class="conv-input-wrap">
+            <input class="conv-input" id="area-output" type="number" placeholder="0" oninput="convertAreaReverse()">
+            <select class="conv-select" id="area-to" onchange="convertArea()">
+              <option value="m2" selected>Square metre (m²)</option>
+              <option value="km2">Square km (km²)</option>
+              <option value="cm2">Square cm (cm²)</option>
+              <option value="mm2">Square mm (mm²)</option>
+              <option value="ft2">Square feet (ft²)</option>
+              <option value="in2">Square inch (in²)</option>
+              <option value="yd2">Square yard (yd²)</option>
+              <option value="mi2">Square mile (mi²)</option>
+              <option value="ha">Hectare (ha)</option>
+              <option value="ac">Acre (ac)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- Also equal to row (like real Windows calculator) -->
+      <div class="area-equal-box" id="area-equal-box"></div>
+      <div class="conv-all-results">
+        <div class="conv-all-title">All conversions</div>
+        <div id="area-all-results"></div>
+      </div>
+    </div>
+  </div>
 
 </div><!-- end app-wrap -->
 
