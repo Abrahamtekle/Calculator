@@ -1,7 +1,7 @@
 // ============================================================
 // PANEL SWITCHER + DROPDOWN MENU
 // ============================================================
-var titles = { calc: 'Scientific', weight: 'Weight Converter', temp: 'Temperature', area: 'Area Converter' };
+var titles = { calc: 'Scientific', weight: 'Weight Converter', temp: 'Temperature', area: 'Area Converter', history: 'History' };
 
 function toggleMenu() {
   document.getElementById('dropdown-menu').classList.toggle('open');
@@ -31,6 +31,8 @@ function showPanel(id) {
   if (titleEl) titleEl.textContent = titles[id] || 'Scientific';
   // Close dropdown
   document.getElementById('dropdown-menu').classList.remove('open');
+  // If opening history, refresh it
+  if (id === 'history') renderHistory();
 }
 
 // ============================================================
@@ -124,7 +126,7 @@ function setMode(m){state.mode=m;document.getElementById('btn-deg').classList.to
 function toggleFE(){state.feMode=!state.feMode;document.getElementById('btn-fe').classList.toggle('active',state.feMode);var c=parseFloat(document.getElementById('result').textContent||'0');updateDisplay(state.feMode?c.toExponential(4):c);}
 function switchCalcTab(t){document.getElementById('tab-trig').classList.toggle('active',t==='trig');document.getElementById('tab-func').classList.toggle('active',t==='func');document.getElementById('panel-trig').style.display=t==='trig'?'grid':'none';document.getElementById('panel-func').style.display=t==='func'?'grid':'none';}
 function memClear(){state.memory=0;}function memRecall(){state.display=String(state.memory);updateDisplay(state.memory);}function memAdd(){state.memory=rnd(state.memory+(parseFloat(state.display)||0));}function memSubtract(){state.memory=rnd(state.memory-(parseFloat(state.display)||0));}function memStore(){state.memory=parseFloat(state.display)||0;}
-function showHistory(){if(state.history.length===0){alert('No calculations yet.');return;}alert('── History ──\n\n'+state.history.map(function(h,i){return(i+1)+'.  '+h.expr+'  '+h.result+'  ['+h.time+']';}).join('\n'));}
+function showHistory(){ showPanel('history'); }
 
 document.addEventListener('keydown',function(e){
   if(e.key>='0'&&e.key<='9')num(e.key);
@@ -354,4 +356,81 @@ function renderAreaAll(m2, highlightUnit) {
             '</div>';
   });
   document.getElementById('area-all-results').innerHTML = html;
+}
+
+
+// ============================================================
+// HISTORY
+// ============================================================
+var MAX_HISTORY = 10;
+
+// Override fnKey eq to also update history badge
+var _origFnKey = fnKey;
+fnKey = function(k) {
+  _origFnKey(k);
+  if (k === 'eq') {
+    updateHistoryBadge();
+    // Also render if history panel is open
+    var hp = document.getElementById('panel-history');
+    if (hp && hp.classList.contains('active')) renderHistory();
+  }
+};
+
+function updateHistoryBadge() {
+  var badge = document.getElementById('history-badge');
+  if (!badge) {
+    var menuItem = document.getElementById('menu-history');
+    if (menuItem) {
+      var sp = document.createElement('span');
+      sp.id = 'history-badge';
+      sp.className = 'history-badge';
+      sp.textContent = state.history.length > MAX_HISTORY ? MAX_HISTORY : state.history.length;
+      menuItem.appendChild(sp);
+    }
+  } else {
+    var count = state.history.length > MAX_HISTORY ? MAX_HISTORY : state.history.length;
+    badge.textContent = count;
+  }
+}
+
+function renderHistory() {
+  var list = document.getElementById('history-list');
+  if (!list) return;
+
+  // Only show last 10
+  var items = state.history.slice(-MAX_HISTORY).reverse();
+
+  if (items.length === 0) {
+    list.innerHTML = '<div class="history-empty">No calculations yet.<br>Start using the calculator!</div>';
+    return;
+  }
+
+  var html = '';
+  items.forEach(function(h, i) {
+    var num = items.length - i;
+    html += '<div class="history-item" onclick="useHistoryResult(' + JSON.stringify(h.result) + ')">' +
+              '<div class="history-item-num">#' + num + '</div>' +
+              '<div class="history-item-expr">' + h.expr + '</div>' +
+              '<div class="history-item-result">' + h.result + '</div>' +
+              '<div class="history-item-time">🕐 ' + h.time + '</div>' +
+              '<button class="history-use-btn" onclick="event.stopPropagation();useHistoryResult(' + JSON.stringify(h.result) + ')">Use ↩</button>' +
+            '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function useHistoryResult(result) {
+  // Switch to calculator and load the result
+  showPanel('calc');
+  state.display  = String(result);
+  state.justCalc = true;
+  updateDisplay(result);
+}
+
+function clearHistory() {
+  state.history = [];
+  renderHistory();
+  // Remove badge
+  var badge = document.getElementById('history-badge');
+  if (badge) badge.remove();
 }
