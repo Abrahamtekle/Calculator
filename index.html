@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scientific Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-wrap">
+
+  <!-- ===== CALCULATOR PANEL ===== -->
+  <div class="panel active" id="panel-calc">
+    <div class="calc-window">
+      <div class="title-bar">
+        <div class="title-left">
+          <div class="menu-wrap">
+            <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
+            <div class="dropdown-menu" id="dropdown-menu">
+              <button class="dropdown-item active" id="menu-calc" onclick="showPanel('calc')">
+                <span>🧮</span> Calculator
+              </button>
+              <button class="dropdown-item" id="menu-weight" onclick="showPanel('weight')">
+                <span>⚖️</span> Weight Converter
+              </button>
+              <button class="dropdown-item" id="menu-temp" onclick="showPanel('temp')">
+                <span>🌡️</span> Temperature
+              </button>
+            </div>
+          </div>
+          <span class="title-text" id="top-bar-title">Scientific</span>
+        </div>
+        <button class="history-btn" onclick="showHistory()">&#10227;</button>
+      </div>
+      <div class="display-area">
+        <div class="expression" id="expression"></div>
+        <div class="result" id="result">0</div>
+      </div>
+      <div class="mode-row">
+        <button class="mode-btn active" id="btn-deg" onclick="setMode('DEG')">DEG</button>
+        <button class="mode-btn" id="btn-rad" onclick="setMode('RAD')">RAD</button>
+        <button class="mode-btn shift-btn" id="btn-fe" onclick="toggleFE()">F-E</button>
+      </div>
+      <div class="mem-row">
+        <button class="mem-btn" onclick="memClear()">MC</button>
+        <button class="mem-btn" onclick="memRecall()">MR</button>
+        <button class="mem-btn" onclick="memAdd()">M+</button>
+        <button class="mem-btn" onclick="memSubtract()">M-</button>
+        <button class="mem-btn" onclick="memStore()">MS</button>
+        <button class="mem-btn">&#8250;</button>
+      </div>
+      <div class="calc-tab-row">
+        <button class="calc-tab-btn active" id="tab-trig" onclick="switchCalcTab('trig')">&#8743; Trigonometry</button>
+        <button class="calc-tab-btn" id="tab-func" onclick="switchCalcTab('func')">&#8744; Function</button>
+      </div>
+      <div class="func-panel" id="panel-trig">
+        <button class="func-btn" onclick="trigFn('sin')">sin</button>
+        <button class="func-btn" onclick="trigFn('cos')">cos</button>
+        <button class="func-btn" onclick="trigFn('tan')">tan</button>
+        <button class="func-btn" onclick="trigFn('asin')">sin⁻¹</button>
+        <button class="func-btn" onclick="trigFn('acos')">cos⁻¹</button>
+        <button class="func-btn" onclick="trigFn('atan')">tan⁻¹</button>
+        <button class="func-btn" onclick="trigFn('sinh')">sinh</button>
+        <button class="func-btn" onclick="trigFn('cosh')">cosh</button>
+        <button class="func-btn" onclick="trigFn('tanh')">tanh</button>
+      </div>
+      <div class="func-panel" id="panel-func" style="display:none;">
+        <button class="func-btn" onclick="fnKey('floor')">floor</button>
+        <button class="func-btn" onclick="fnKey('ceil')">ceil</button>
+        <button class="func-btn" onclick="fnKey('abs')">|x|</button>
+        <button class="func-btn" onclick="fnKey('exp')">exp</button>
+        <button class="func-btn" onclick="fnKey('log')">log</button>
+        <button class="func-btn" onclick="fnKey('ln')">ln</button>
+        <button class="func-btn" onclick="fnKey('rand')">rand</button>
+        <button class="func-btn" onclick="fnKey('round')">round</button>
+        <button class="func-btn" onclick="fnKey('fact')">n!</button>
+      </div>
+      <div class="btn-grid">
+        <button class="btn btn-fn" onclick="fnKey('percent')">%</button>
+        <button class="btn btn-fn" onclick="fnKey('ce')">CE</button>
+        <button class="btn btn-fn" onclick="fnKey('c')">C</button>
+        <button class="btn btn-fn" onclick="fnKey('bs')">&#9003;</button>
+        <button class="btn btn-fn" onclick="fnKey('inv')">&#185;/x</button>
+        <button class="btn btn-fn" onclick="fnKey('sq')">x²</button>
+        <button class="btn btn-fn" onclick="fnKey('sqrt')">&#8730;x</button>
+        <button class="btn btn-op" onclick="op('/')">÷</button>
+        <button class="btn btn-fn" onclick="fnKey('pow')">xʸ</button>
+        <button class="btn btn-num" onclick="num('7')">7</button>
+        <button class="btn btn-num" onclick="num('8')">8</button>
+        <button class="btn btn-num" onclick="num('9')">9</button>
+        <button class="btn btn-op" onclick="op('*')">×</button>
+        <button class="btn btn-num" onclick="num('4')">4</button>
+        <button class="btn btn-num" onclick="num('5')">5</button>
+        <button class="btn btn-num" onclick="num('6')">6</button>
+        <button class="btn btn-op" onclick="op('-')">−</button>
+        <button class="btn btn-num" onclick="num('1')">1</button>
+        <button class="btn btn-num" onclick="num('2')">2</button>
+        <button class="btn btn-num" onclick="num('3')">3</button>
+        <button class="btn btn-op" onclick="op('+')">+</button>
+        <button class="btn btn-fn" onclick="fnKey('pm')">⁺∕₋</button>
+        <button class="btn btn-num" onclick="num('0')">0</button>
+        <button class="btn btn-fn" onclick="fnKey('dot')">.</button>
+        <button class="btn btn-eq btn-span4" onclick="fnKey('eq')">=</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WEIGHT CONVERTER PANEL ===== -->
+  <div class="panel" id="panel-weight">
+    <div class="converter-box">
+      <div class="conv-title">⚖️ <span>Weight</span> Converter</div>
+      <div class="conv-row">
+        <div class="conv-field">
+          <div class="conv-label">From</div>
+          <div class="conv-input-wrap">
+            <input class="conv-input" id="weight-input" type="number" placeholder="0" oninput="convertWeight()">
+            <select class="conv-select" id="weight-from" onchange="convertWeight()">
+              <option value="kg">Kilogram (kg)</option>
+              <option value="g">Gram (g)</option>
+              <option value="mg">Milligram (mg)</option>
+              <option value="lb">Pound (lb)</option>
+              <option value="oz">Ounce (oz)</option>
+              <option value="ton">Metric Ton (t)</option>
+              <option value="st">Stone (st)</option>
+              <option value="mcg">Microgram (μg)</option>
+            </select>
+          </div>
+        </div>
+        <button class="swap-btn" onclick="swapWeight()" title="Swap units">&#8645;</button>
+        <div class="conv-field">
+          <div class="conv-label">To</div>
+          <div class="conv-input-wrap">
+            <input class="conv-input" id="weight-output" type="number" placeholder="0" oninput="convertWeightReverse()">
+            <select class="conv-select" id="weight-to" onchange="convertWeight()">
+              <option value="kg">Kilogram (kg)</option>
+              <option value="g">Gram (g)</option>
+              <option value="mg">Milligram (mg)</option>
+              <option value="lb" selected>Pound (lb)</option>
+              <option value="oz">Ounce (oz)</option>
+              <option value="ton">Metric Ton (t)</option>
+              <option value="st">Stone (st)</option>
+              <option value="mcg">Microgram (μg)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="conv-all-results">
+        <div class="conv-all-title">All conversions</div>
+        <div id="weight-all-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TEMPERATURE CONVERTER PANEL ===== -->
+  <div class="panel" id="panel-temp">
+    <div class="converter-box">
+      <div class="conv-title">🌡️ <span>Temperature</span> Converter</div>
+      <div class="conv-row">
+        <div class="conv-field">
+          <div class="conv-label">From</div>
+          <div class="conv-input-wrap">
+            <input class="conv-input" id="temp-input" type="number" placeholder="0" oninput="convertTemp()">
+            <select class="conv-select" id="temp-from" onchange="convertTemp()">
+              <option value="C">Celsius (°C)</option>
+              <option value="F">Fahrenheit (°F)</option>
+              <option value="K">Kelvin (K)</option>
+              <option value="R">Rankine (°R)</option>
+            </select>
+          </div>
+        </div>
+        <button class="swap-btn" onclick="swapTemp()" title="Swap units">&#8645;</button>
+        <div class="conv-field">
+          <div class="conv-label">To</div>
+          <div class="conv-input-wrap">
+            <input class="conv-input" id="temp-output" type="number" placeholder="0" oninput="convertTempReverse()">
+            <select class="conv-select" id="temp-to" onchange="convertTemp()">
+              <option value="C">Celsius (°C)</option>
+              <option value="F" selected>Fahrenheit (°F)</option>
+              <option value="K">Kelvin (K)</option>
+              <option value="R">Rankine (°R)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="conv-all-results">
+        <div class="conv-all-title">All conversions</div>
+        <div id="temp-all-results"></div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div><!-- end app-wrap -->
+
+<script src="script.js"></script>
+</body>
+</html>
