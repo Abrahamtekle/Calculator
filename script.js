@@ -1,7 +1,7 @@
 // ============================================================
 // PANEL SWITCHER + DROPDOWN MENU
 // ============================================================
-var titles = { calc: 'Scientific', weight: 'Weight Converter', temp: 'Temperature' };
+var titles = { calc: 'Scientific', weight: 'Weight Converter', temp: 'Temperature', area: 'Area Converter' };
 
 function toggleMenu() {
   document.getElementById('dropdown-menu').classList.toggle('open');
@@ -247,4 +247,111 @@ function roundConv(n){
   if(Math.abs(n)<0.000001&&n!==0) return n.toExponential(4);
   if(Math.abs(n)>1e12)            return n.toExponential(4);
   return Math.round(n*1e8)/1e8;
+}
+
+// ============================================================
+// AREA CONVERTER
+// ============================================================
+// All conversions go through m² as base unit
+var areaToM2 = {
+  m2:   1,
+  km2:  1e6,
+  cm2:  1e-4,
+  mm2:  1e-6,
+  ft2:  0.09290304,
+  in2:  0.00064516,
+  yd2:  0.83612736,
+  mi2:  2589988.110336,
+  ha:   10000,
+  ac:   4046.8564224
+};
+
+var areaNames = {
+  m2:  'Square metre (m²)',
+  km2: 'Square kilometre (km²)',
+  cm2: 'Square centimetre (cm²)',
+  mm2: 'Square millimetre (mm²)',
+  ft2: 'Square foot (ft²)',
+  in2: 'Square inch (in²)',
+  yd2: 'Square yard (yd²)',
+  mi2: 'Square mile (mi²)',
+  ha:  'Hectare (ha)',
+  ac:  'Acre (ac)'
+};
+
+var areaShort = {
+  m2: 'm²', km2: 'km²', cm2: 'cm²', mm2: 'mm²',
+  ft2: 'ft²', in2: 'in²', yd2: 'yd²', mi2: 'mi²',
+  ha: 'ha', ac: 'ac'
+};
+
+function convertArea() {
+  var val  = parseFloat(document.getElementById('area-input').value);
+  var from = document.getElementById('area-from').value;
+  var to   = document.getElementById('area-to').value;
+
+  if (isNaN(val)) {
+    document.getElementById('area-output').value = '';
+    document.getElementById('area-equal-box').innerHTML = '';
+    renderAreaAll(null, to);
+    return;
+  }
+
+  var m2     = val * areaToM2[from];
+  var result = m2 / areaToM2[to];
+  document.getElementById('area-output').value = roundConv(result);
+
+  // "Also equal to" box — show 3 interesting related units
+  renderAreaEqual(m2, from, to);
+  renderAreaAll(m2, to);
+}
+
+function convertAreaReverse() {
+  var val  = parseFloat(document.getElementById('area-output').value);
+  var from = document.getElementById('area-to').value;
+  var to   = document.getElementById('area-from').value;
+  if (isNaN(val)) { document.getElementById('area-input').value = ''; return; }
+  var m2 = val * areaToM2[from];
+  document.getElementById('area-input').value = roundConv(m2 / areaToM2[to]);
+  renderAreaEqual(m2, to, from);
+  renderAreaAll(m2, document.getElementById('area-to').value);
+}
+
+function swapArea() {
+  var f = document.getElementById('area-from');
+  var t = document.getElementById('area-to');
+  var tmp = f.value; f.value = t.value; t.value = tmp;
+  convertArea();
+}
+
+function renderAreaEqual(m2, from, to) {
+  // Show 3 "also equal to" comparisons — skip from and to units
+  var show  = ['ft2','in2','cm2','yd2','ac','ha','mi2','km2','mm2','m2'];
+  var parts = [];
+  for (var i = 0; i < show.length && parts.length < 3; i++) {
+    var u = show[i];
+    if (u === from || u === to) continue;
+    var val = roundConv(m2 / areaToM2[u]);
+    parts.push('<span>' + val + '</span>' + areaShort[u]);
+  }
+  var box = document.getElementById('area-equal-box');
+  if (parts.length > 0) {
+    box.innerHTML = 'Also equal to: ' + parts.join(' &nbsp;·&nbsp; ');
+  } else {
+    box.innerHTML = '';
+  }
+}
+
+function renderAreaAll(m2, highlightUnit) {
+  if (m2 === null) { document.getElementById('area-all-results').innerHTML = ''; return; }
+  var html = '';
+  Object.keys(areaToM2).forEach(function(u) {
+    var val = roundConv(m2 / areaToM2[u]);
+    var hl  = u === highlightUnit ? ' highlight' : '';
+    html += '<div class="conv-all-row' + hl + '">' +
+              '<span class="conv-all-unit">' + areaNames[u] + '</span>' +
+              '<span class="conv-all-val">' + val + ' ' + areaShort[u] + '</span>' +
+            '</div>';
+  });
+  document.getElementById('area-all-results').innerHTML = html;
 }
