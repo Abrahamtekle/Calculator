@@ -269,3 +269,118 @@ body {
   font-weight: 500;
   margin-right: 4px;
 }
+
+/* ===== HISTORY PANEL ===== */
+.history-box {
+  padding: 18px 16px 20px !important;
+}
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.history-subtitle {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.history-clear-btn {
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #f87171;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.history-clear-btn:hover {
+  background: rgba(239,68,68,0.3);
+  color: #fff;
+}
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+.history-list::-webkit-scrollbar { width: 4px; }
+.history-list::-webkit-scrollbar-track { background: transparent; }
+.history-list::-webkit-scrollbar-thumb { background: rgba(167,139,250,0.3); border-radius: 4px; }
+.history-empty {
+  text-align: center;
+  color: rgba(255,255,255,0.25);
+  font-size: 14px;
+  padding: 40px 20px;
+  line-height: 1.8;
+}
+.history-item {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.history-item:hover {
+  background: rgba(167,139,250,0.12);
+  border-color: rgba(167,139,250,0.3);
+}
+.history-item:hover .history-use-btn {
+  opacity: 1;
+}
+.history-item-expr {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 4px;
+  word-break: break-all;
+}
+.history-item-result {
+  font-size: 22px;
+  font-weight: 200;
+  color: #fff;
+  word-break: break-all;
+}
+.history-item-time {
+  font-size: 10px;
+  color: rgba(255,255,255,0.25);
+  margin-top: 4px;
+}
+.history-item-num {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.2);
+}
+.history-use-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(167,139,250,0.25);
+  border: none;
+  color: #c4b5fd;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.history-badge {
+  display: inline-block;
+  background: rgba(167,139,250,0.3);
+  color: #c4b5fd;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 20px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
