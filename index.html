@@ -29,6 +29,9 @@
               <button class="dropdown-item" id="menu-area" onclick="showPanel('area')">
                 <span>📐</span> Area
               </button>
+              <button class="dropdown-item" id="menu-history" onclick="showPanel('history')">
+                <span>🕐</span> History
+              </button>
             </div>
           </div>
           <span class="title-text" id="top-bar-title">Scientific</span>
@@ -242,6 +245,20 @@
       <div class="conv-all-results">
         <div class="conv-all-title">All conversions</div>
         <div id="area-all-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HISTORY PANEL ===== -->
+  <div class="panel" id="panel-history">
+    <div class="converter-box history-box">
+      <div class="history-header">
+        <div class="conv-title" style="margin-bottom:0;">🕐 <span>History</span></div>
+        <button class="history-clear-btn" onclick="clearHistory()">Clear All</button>
+      </div>
+      <div class="history-subtitle">Last 10 calculations</div>
+      <div id="history-list" class="history-list">
+        <div class="history-empty">No calculations yet.<br>Start using the calculator!</div>
       </div>
     </div>
   </div>
