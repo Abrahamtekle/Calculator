@@ -252,3 +252,20 @@ body {
 .conv-all-val { color: #fff; font-weight: 300; }
 .conv-all-row.highlight .conv-all-unit { color: #a78bfa; }
 .conv-all-row.highlight .conv-all-val { color: #c4b5fd; font-size: 15px; }
+
+/* ===== AREA EQUAL BOX ===== */
+.area-equal-box {
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.8;
+  min-height: 36px;
+}
+.area-equal-box span {
+  color: #a78bfa;
+  font-weight: 500;
+  margin-right: 4px;
+}
