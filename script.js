@@ -1,7 +1,7 @@
 // ============================================================
 // PANEL SWITCHER + DROPDOWN MENU
 // ============================================================
-var titles = { calc: 'Scientific', weight: 'Weight Converter', temp: 'Temperature', area: 'Area Converter', history: 'History' };
+var titles = { calc: 'Scientific', weight: 'Weight Converter', temp: 'Temperature', area: 'Area Converter', data: 'Data Converter', history: 'History' };
 
 function toggleMenu() {
   document.getElementById('dropdown-menu').classList.toggle('open');
@@ -433,4 +433,89 @@ function clearHistory() {
   // Remove badge
   var badge = document.getElementById('history-badge');
   if (badge) badge.remove();
+}
+
+
+// ============================================================
+// DATA / STORAGE CONVERTER
+// ============================================================
+// All conversions through bits as base
+var dataToBit = {
+  bit:   1,
+  byte:  8,
+  kb:    8 * 1024,
+  mb:    8 * 1024 * 1024,
+  gb:    8 * 1024 * 1024 * 1024,
+  tb:    8 * 1024 * 1024 * 1024 * 1024,
+  pb:    8 * 1024 * 1024 * 1024 * 1024 * 1024,
+  kbit:  1024,
+  mbit:  1024 * 1024,
+  gbit:  1024 * 1024 * 1024
+};
+
+var dataNames = {
+  bit:  'Bit (b)',
+  byte: 'Byte (B)',
+  kb:   'Kilobyte (KB)',
+  mb:   'Megabyte (MB)',
+  gb:   'Gigabyte (GB)',
+  tb:   'Terabyte (TB)',
+  pb:   'Petabyte (PB)',
+  kbit: 'Kilobit (Kbit)',
+  mbit: 'Megabit (Mbit)',
+  gbit: 'Gigabit (Gbit)'
+};
+
+var dataShort = {
+  bit: 'b', byte: 'B', kb: 'KB', mb: 'MB', gb: 'GB',
+  tb: 'TB', pb: 'PB', kbit: 'Kbit', mbit: 'Mbit', gbit: 'Gbit'
+};
+
+function convertData() {
+  var val  = parseFloat(document.getElementById('data-input').value);
+  var from = document.getElementById('data-from').value;
+  var to   = document.getElementById('data-to').value;
+
+  if (isNaN(val)) {
+    document.getElementById('data-output').value = '';
+    renderDataAll(null, to);
+    return;
+  }
+
+  var bits   = val * dataToBit[from];
+  var result = bits / dataToBit[to];
+  document.getElementById('data-output').value = roundConv(result);
+  renderDataAll(bits, to);
+}
+
+function convertDataReverse() {
+  var val  = parseFloat(document.getElementById('data-output').value);
+  var from = document.getElementById('data-to').value;
+  var to   = document.getElementById('data-from').value;
+  if (isNaN(val)) { document.getElementById('data-input').value = ''; return; }
+  var bits = val * dataToBit[from];
+  document.getElementById('data-input').value = roundConv(bits / dataToBit[to]);
+  renderDataAll(bits, document.getElementById('data-to').value);
+}
+
+function swapData() {
+  var f = document.getElementById('data-from');
+  var t = document.getElementById('data-to');
+  var tmp = f.value; f.value = t.value; t.value = tmp;
+  convertData();
+}
+
+function renderDataAll(bits, highlightUnit) {
+  if (bits === null) { document.getElementById('data-all-results').innerHTML = ''; return; }
+  var order = ['bit','byte','kb','mb','gb','tb','pb','kbit','mbit','gbit'];
+  var html  = '';
+  order.forEach(function(u) {
+    var val = roundConv(bits / dataToBit[u]);
+    var hl  = u === highlightUnit ? ' highlight' : '';
+    html += '<div class="conv-all-row' + hl + '">' +
+              '<span class="conv-all-unit">' + dataNames[u] + '</span>' +
+              '<span class="conv-all-val">' + val + ' ' + dataShort[u] + '</span>' +
+            '</div>';
+  });
+  document.getElementById('data-all-results').innerHTML = html;
 }
