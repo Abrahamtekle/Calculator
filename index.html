@@ -29,6 +29,9 @@
               <button class="dropdown-item" id="menu-area" onclick="showPanel('area')">
                 <span>📐</span> Area
               </button>
+              <button class="dropdown-item" id="menu-data" onclick="showPanel('data')">
+                <span>💾</span> Data
+              </button>
               <button class="dropdown-item" id="menu-history" onclick="showPanel('history')">
                 <span>🕐</span> History
               </button>
@@ -245,6 +248,56 @@
       <div class="conv-all-results">
         <div class="conv-all-title">All conversions</div>
         <div id="area-all-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DATA CONVERTER PANEL ===== -->
+  <div class="panel" id="panel-data">
+    <div class="converter-box">
+      <div class="conv-title">💾 <span>Data</span> Converter</div>
+      <div class="conv-row">
+        <div class="conv-field">
+          <div class="conv-label">From</div>
+          <div class="conv-input-wrap">
+            <input class="conv-input" id="data-input" type="number" placeholder="0" oninput="convertData()">
+            <select class="conv-select" id="data-from" onchange="convertData()">
+              <option value="bit">Bit (b)</option>
+              <option value="byte">Byte (B)</option>
+              <option value="kb">Kilobyte (KB)</option>
+              <option value="mb">Megabyte (MB)</option>
+              <option value="gb" selected>Gigabyte (GB)</option>
+              <option value="tb">Terabyte (TB)</option>
+              <option value="pb">Petabyte (PB)</option>
+              <option value="kbit">Kilobit (Kbit)</option>
+              <option value="mbit">Megabit (Mbit)</option>
+              <option value="gbit">Gigabit (Gbit)</option>
+            </select>
+          </div>
+        </div>
+        <button class="swap-btn" onclick="swapData()" title="Swap units">&#8645;</button>
+        <div class="conv-field">
+          <div class="conv-label">To</div>
+          <div class="conv-input-wrap">
+            <input class="conv-input" id="data-output" type="number" placeholder="0" oninput="convertDataReverse()">
+            <select class="conv-select" id="data-to" onchange="convertData()">
+              <option value="bit">Bit (b)</option>
+              <option value="byte">Byte (B)</option>
+              <option value="kb">Kilobyte (KB)</option>
+              <option value="mb" selected>Megabyte (MB)</option>
+              <option value="gb">Gigabyte (GB)</option>
+              <option value="tb">Terabyte (TB)</option>
+              <option value="pb">Petabyte (PB)</option>
+              <option value="kbit">Kilobit (Kbit)</option>
+              <option value="mbit">Megabit (Mbit)</option>
+              <option value="gbit">Gigabit (Gbit)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="conv-all-results">
+        <div class="conv-all-title">All conversions</div>
+        <div id="data-all-results"></div>
       </div>
     </div>
   </div>
